@@ -1,25 +1,67 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import AddSong from "./components/AddSong"
+import Header from "./components/Header"
+import SongList from "./components/SongList"
+import SongPlayer from "./components/SongPlayer"
+import Grid from "@mui/material/Grid"
+import theme from "./theme"
+import CssBaseline from '@mui/material/CssBaseline';
+import {ThemeProvider, StyledEngineProvider} from '@mui/material/styles';
+import {Hidden, useMediaQuery} from "@mui/material";
+
+declare module "@mui/private-theming" {
+  interface DefaultTheme {
+    spacing: (spacing: number) => string;
+  }
+}
 
 function App() {
+  const greaterThanSm = useMediaQuery(theme.breakpoints.up('sm'));
+  const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <CssBaseline/>
+        <Hidden only="xs">
+          <Header/>
+        </Hidden>
+        <Grid container spacing={3}>
+          <Grid
+            style={{
+              paddingTop: greaterThanSm ? 88 : 10
+            }}
+            item
+            xs={12}
+            md={7}
+          >
+            <AddSong/>
+            <SongList/>
+          </Grid>
+          <Grid
+            style={
+              greaterThanMd
+                ? {
+                  position: "fixed",
+                  width: "100%",
+                  right: 0,
+                  top: 50
+                }
+                : {
+                  position: "fixed",
+                  width: "100%",
+                  left: 0,
+                  bottom: 0
+                }
+            }
+            item
+            xs={12}
+            md={5}
+          >
+            <SongPlayer/>
+          </Grid>
+        </Grid>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 }
 

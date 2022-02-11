@@ -3,10 +3,8 @@ import Song from './Song'
 import {useQuery} from "@apollo/client";
 import {GET_SONGS} from "../graphql/queries";
 
-
-
 const SongList = () => {
-const {data, loading, error} = useQuery(GET_SONGS);
+  const {data, loading, error} = useQuery(GET_SONGS);
 
   if (loading) {
     return <div style={{
@@ -26,7 +24,7 @@ const {data, loading, error} = useQuery(GET_SONGS);
   return (
     <div>
       {/* @ts-ignore */}
-      {data.songs.map(s => <Song key={s.id} song={s} />)}
+      {data.songs.map(s => <Song key={s.id} song={s}/>)}
     </div>
   )
 }

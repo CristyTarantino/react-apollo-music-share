@@ -7,6 +7,8 @@ import theme from "./theme"
 import CssBaseline from '@mui/material/CssBaseline';
 import {ThemeProvider, StyledEngineProvider} from '@mui/material/styles';
 import {Hidden, useMediaQuery} from "@mui/material";
+import {useContext, useReducer, createContext} from "react";
+import songReducer from "./reducer";
 
 declare module "@mui/private-theming" {
   interface DefaultTheme {
@@ -14,7 +16,21 @@ declare module "@mui/private-theming" {
   }
 }
 
+export const SongContext = createContext({
+  song: {
+    id: "",
+    title: "",
+    artist: "",
+    thumbnail: "",
+    duration: ""
+  },
+  isPlaying: false
+})
+
 function App() {
+  const initialSongState = useContext(SongContext);
+  // @ts-ignore
+  const [state, dispatch] = useReducer(songReducer, initialSongState);
   const greaterThanSm = useMediaQuery(theme.breakpoints.up('sm'));
   const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -22,6 +38,10 @@ function App() {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline/>
+        <SongContext.Provider value={
+          // @ts-ignore
+          {state, dispatch}
+        }>
         <Hidden only="xs">
           <Header/>
         </Hidden>
@@ -60,6 +80,7 @@ function App() {
             <SongPlayer/>
           </Grid>
         </Grid>
+        </SongContext.Provider>
       </ThemeProvider>
     </StyledEngineProvider>
   );

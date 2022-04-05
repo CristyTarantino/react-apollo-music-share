@@ -1,10 +1,10 @@
 import {CircularProgress} from "@mui/material";
 import Song from './Song'
-import {useQuery} from "@apollo/client";
-import {GET_SONGS} from "../graphql/queries";
+import {useSubscription} from "@apollo/client";
+import {GET_SONGS} from "../graphql/subscriptions";
 
 const SongList = () => {
-  const {data, loading, error} = useQuery(GET_SONGS);
+  const {data, loading, error} = useSubscription(GET_SONGS);
 
   if (loading) {
     return <div style={{
